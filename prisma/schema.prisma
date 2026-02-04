@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  name         String
+  businessName String?
+  createdAt    DateTime  @default(now())
+  settings     Json?     // (Currency, default tax rate, branding colors)
+
+  clients      Client[]
+  projects     Project[]
+  invoices     Invoice[]
+  timeLogs     TimeLog[]
+}
+
+model Client {
+  id               String    @id @default(uuid())
+  userId           String
+  user             User      @relation(fields: [userId], references: [id])
+  name             String
+  email            String
+  address          String?
+  taxId            String?
+  portalAccessCode String?
+  createdAt        DateTime  @default(now())
+
+  projects Project[]
+  invoices Invoice[]
+}
+
+model Project {
+  id         String    @id @default(uuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  clientId   String
+  client     Client    @relation(fields: [clientId], references: [id])
+  name       String
+  status     ProjectStatus
+  budget     Decimal?
+  hourlyRate Decimal?
+  createdAt  DateTime  @default(now())
+
+  tasks    Task[]
+  invoices Invoice[]
+  timeLogs TimeLog[]
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  projectId   String
+  project     Project    @relation(fields: [projectId], references: [id])
+  title       String
+  description String?
+  status      TaskStatus
+  dueDate     DateTime?
+}
+
+model Invoice {
+  id          String        @id @default(uuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  clientId    String
+  client      Client        @relation(fields: [clientId], references: [id])
+  projectId   String?
+  project     Project?      @relation(fields: [projectId], references: [id])
+  number      String
+  status      InvoiceStatus
+  issueDate   DateTime
+  dueDate     DateTime
+  currency    String
+  totalAmount Decimal
+  taxAmount   Decimal
+  items       Json          // Array of { description, quantity, price }
+}
+
+model TimeLog {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id])
+  startTime   DateTime
+  endTime     DateTime?
+  description String?
+  billable    Boolean   @default(true)
+}
+
+enum ProjectStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+  ON_HOLD
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  VOID
+}
