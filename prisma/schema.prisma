@@ -33,7 +33,7 @@ model Client {
   email            String
   address          String?
   taxId            String?
-  portalAccessCode String?
+  portalAccessCode String?   @unique
   createdAt        DateTime  @default(now())
 
   projects Project[]

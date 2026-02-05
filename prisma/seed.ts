@@ -26,6 +26,7 @@ async function main() {
       name: 'Acme Corp',
       email: 'contact@acme.com',
       userId: user.id,
+      portalAccessCode: 'ACME123',
     },
   })
 
@@ -34,6 +35,7 @@ async function main() {
       name: 'Globex Corporation',
       email: 'info@globex.com',
       userId: user.id,
+      portalAccessCode: 'GLOBEX99',
     },
   })
 
