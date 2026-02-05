@@ -1,1 +1,5 @@
-export default function Page() { return <div>New Invoice</div> }
+import { CreateInvoiceWizard } from "@/components/finance/create-invoice-wizard"
+
+export default function NewInvoicePage() {
+    return <CreateInvoiceWizard />
+}
