@@ -76,7 +76,7 @@ export default function DashboardPage() {
                  <p className="text-muted-foreground text-xs">2 hours ago</p>
               </div>
               <div className="text-sm">
-                 <p className="font-medium">Project "Website Redesign" updated</p>
+                 <p className="font-medium">Project &quot;Website Redesign&quot; updated</p>
                  <p className="text-muted-foreground text-xs">5 hours ago</p>
               </div>
             </div>
